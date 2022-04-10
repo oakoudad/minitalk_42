@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_server.c                                        :+:      :+:    :+:   */
+/*   ft_server_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: oakoudad <oakoudad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/13 15:31:10 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/03/19 19:55:30 by oakoudad         ###   ########.fr       */
+/*   Updated: 2022/03/19 21:12:55 by oakoudad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@ void	init_bin(int *i, int *cp, char *c)
 
 void	ft_serve(int signal, siginfo_t *siginfo, void *uc)
 {
-	static int	cp = 0;
-	static int	i = 0;
-	static char	c = 0;
+	static int	cp;
+	static int	i;
+	static char	c;
 	static int	c_pid = -1;
 
 	(void)uc;
@@ -49,10 +49,10 @@ void	ft_serve(int signal, siginfo_t *siginfo, void *uc)
 	if (cp == 8)
 	{
 		ft_putchar_fd(c, 1);
+		if (c == '\0')
+			kill(c_pid, SIGUSR1);
 		init_bin(&i, &cp, &c);
 	}
-	if (i == 8 && siginfo->si_pid != 0)
-		init_bin(&i, &cp, &c);
 	kill(c_pid, SIGUSR2);
 }
 

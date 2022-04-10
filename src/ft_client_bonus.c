@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_client.c                                        :+:      :+:    :+:   */
+/*   ft_client_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: oakoudad <oakoudad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/19 19:57:21 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/03/19 21:16:52 by oakoudad         ###   ########.fr       */
+/*   Created: 2022/03/19 21:02:27 by oakoudad          #+#    #+#             */
+/*   Updated: 2022/03/19 21:18:26 by oakoudad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minitalk.h"
 
-int		g_send;
+int	g_send;
 
 int	ft_isvalid(int c, char *pid)
 {
@@ -63,6 +63,13 @@ void	ft_send_char(int pid, unsigned char c)
 	}
 }
 
+void	handler(int sing)
+{
+	(void)sing;
+	ft_putstr_fd("\x1B[32mMessage received! \x1B[0m\n", 1);
+	exit(1);
+}
+
 void	next(int sing)
 {
 	(void)sing;
@@ -81,6 +88,7 @@ int	main(int c, char **v)
 		pid = ft_atoi(v[1]);
 		arg = v[2];
 		i = 0;
+		signal(SIGUSR1, handler);
 		signal(SIGUSR2, next);
 		g_send = 0;
 		while (i <= ft_strlen(arg))
@@ -90,6 +98,8 @@ int	main(int c, char **v)
 				break ;
 			i++;
 		}
+		while (1)
+			usleep(10);
 	}
 	return (0);
 }
